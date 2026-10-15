@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Privacy lock: the page may only load its own files. No fonts, analytics,
+       embeds or outside requests of any kind. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <title>Steady Start</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-row">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">Steady Start</span>
+      </div>
+      <button type="button" class="quick-exit" id="quick-exit"
+              aria-describedby="exit-hint">
+        Quick exit
+      </button>
+    </div>
+    <p class="exit-hint wrap" id="exit-hint">
+      Press <kbd>Esc</kbd> or the Quick exit button to leave this page right away.
+    </p>
+    <nav class="tabs wrap" aria-label="Sections">
+      <div role="tablist" class="tablist">
+        <button type="button" role="tab" id="tab-guide" aria-controls="panel-guide" aria-selected="true">Guide</button>
+        <button type="button" role="tab" id="tab-providers" aria-controls="panel-providers" aria-selected="false">Providers</button>
+        <button type="button" role="tab" id="tab-insurance" aria-controls="panel-insurance" aria-selected="false">Costs</button>
+        <button type="button" role="tab" id="tab-telehealth" aria-controls="panel-telehealth" aria-selected="false">Video care</button>
+        <button type="button" role="tab" id="tab-evidence" aria-controls="panel-evidence" aria-selected="false">Why</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+
+    <!-- GUIDE -->
+    <section role="tabpanel" id="panel-guide" aria-labelledby="tab-guide" class="panel">
+      <div class="intro">
+        <h1>Care that goes at your pace</h1>
+        <p>
+          This guide is for people who are pregnant and have been hurt by a partner
+          or by sexual violence. Pick what fits you. Nothing you click is saved or
+          sent anywhere.
+        </p>
+      </div>
+
+      <fieldset class="choices">
+        <legend>Where are you right now?</legend>
+        <div class="choice-grid" id="choice-grid"></div>
+      </fieldset>
+
+      <div id="cards" class="cards" aria-live="polite"></div>
+    </section>
+
+    <!-- PROVIDERS -->
+    <section role="tabpanel" id="panel-providers" aria-labelledby="tab-providers" class="panel" hidden>
+      <h1>Find a provider</h1>
+      <p class="lede">
+        These are pregnancy care clinics in Texas. Each one says on its own website
+        that its care is trauma-informed. That means they try to make care feel safe
+        for people who have been hurt. We have not tested or rated them.
+      </p>
+      <p><button type="button" class="btn btn-quiet" id="go-suggest">Know a good provider? Suggest one</button></p>
+
+      <div class="search" role="search">
+        <label class="field">
+          <span>Search by city or name</span>
+          <input type="search" id="provider-search" autocomplete="off" spellcheck="false"
+                 placeholder="For example: Houston">
+        </label>
+        <label class="field">
+          <span>Area</span>
+          <select id="provider-region"><option value="">All areas</option></select>
+        </label>
+        <label class="field">
+          <span>Kind of place</span>
+          <select id="provider-type"><option value="">All kinds</option></select>
+        </label>
+      </div>
+      <p class="small" id="provider-count" aria-live="polite"></p>
+      <div id="provider-list" class="provider-list"></div>
+
+      <div class="callout">
+        <h2>Calling a clinic yourself</h2>
+        <p>Before you make a visit, you can ask:</p>
+        <ul>
+          <li>"Are your doctors trained in trauma-informed care?"</li>
+          <li>"Can I bring a person I trust to every visit?"</li>
+          <li>"Can I ask for a woman or a man to care for me?"</li>
+          <li>"Can I keep my clothes on and talk first?"</li>
+          <li>"Can you write down what I need, so I don't have to say it again?"</li>
+        </ul>
+        <p class="small">If they answer kindly and don't rush you, that is a good sign.</p>
+      </div>
+
+      <section class="suggest card" id="suggest" aria-labelledby="suggest-title">
+        <h2 id="suggest-title">Suggest a provider</h2>
+        <p class="demo-note">
+          <strong>Class demo:</strong> this form does not send or save anything yet.
+          It shows how suggestions could work.
+        </p>
+
+        <form id="suggest-form" novalidate>
+          <fieldset class="who">
+            <legend>Who are you?</legend>
+            <label class="radio"><input type="radio" name="who" value="patient" checked> I am recommending a provider</label>
+            <label class="radio"><input type="radio" name="who" value="provider"> I am a provider</label>
+          </fieldset>
+
+          <label class="field">
+            <span>Clinic or hospital name <em class="req">(needed)</em></span>
+            <input type="text" name="practice" maxlength="120" required autocomplete="off">
+          </label>
+          <label class="field">
+            <span>City</span>
+            <input type="text" name="city" maxlength="60" autocomplete="off">
+          </label>
+          <label class="field">
+            <span data-who="patient">Doctor's or midwife's name</span>
+            <span data-who="provider" hidden>Your name and title</span>
+            <input type="text" name="clinician" maxlength="120" autocomplete="off">
+          </label>
+
+          <div data-who="provider" hidden>
+            <label class="field">
+              <span>Link to your page that says your care is trauma-informed <em class="req">(needed)</em></span>
+              <input type="url" name="link" maxlength="300" autocomplete="off" placeholder="https://">
+            </label>
+          </div>
+
+          <label class="field">
+            <span data-who="patient">What was your care like? <em class="req">(needed)</em></span>
+            <span data-who="provider" hidden>How do you help patients feel safe? <em class="req">(needed)</em></span>
+            <textarea name="blurb" rows="5" maxlength="600" required></textarea>
+            <span class="hint" data-who="patient">Please don't write your name, or details that could show who you are.</span>
+            <span class="hint" data-who="provider" hidden>A few sentences in plain words.</span>
+          </label>
+
+          <label class="check" data-who="patient">
+            <input type="checkbox" name="consent-patient">
+            It's OK to share my words on this site, without my name, after someone reads them first.
+          </label>
+          <label class="check" data-who="provider" hidden>
+            <input type="checkbox" name="consent-provider">
+            I am allowed to speak for this clinic, and my words may be shared on this site.
+          </label>
+
+          <p class="form-error" id="suggest-error" role="alert" hidden></p>
+          <button type="submit" class="btn">Send suggestion</button>
+        </form>
+        <div id="suggest-thanks" class="thanks" tabindex="-1" hidden>
+          <h3>Thank you!</h3>
+          <p>This is a class demo, so nothing was sent or saved. Your words were cleared.</p>
+          <button type="button" class="btn btn-quiet" id="suggest-again">Start over</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- PAYING FOR CARE -->
+    <section role="tabpanel" id="panel-insurance" aria-labelledby="tab-insurance" class="panel" hidden>
+      <div id="page-insurance" class="cards"></div>
+    </section>
+
+    <!-- TELEHEALTH -->
+    <section role="tabpanel" id="panel-telehealth" aria-labelledby="tab-telehealth" class="panel" hidden>
+      <div id="page-telehealth" class="cards"></div>
+    </section>
+
+    <!-- EVIDENCE -->
+    <section role="tabpanel" id="panel-evidence" aria-labelledby="tab-evidence" class="panel" hidden>
+      <h1>Why this guide exists</h1>
+      <p class="lede" id="evidence-why"></p>
+      <div id="charts" class="charts"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <h2>If you need someone now</h2>
+      <ul class="hotlines">
+        <li><strong>National Domestic Violence Hotline</strong>, call <a href="tel:18007997233">1-800-799-7233</a> or text START to <a href="sms:88788">88788</a></li>
+        <li><strong>RAINN National Sexual Assault Hotline</strong>, call <a href="tel:18006564673">1-800-656-4673</a></li>
+        <li><strong>988 Suicide &amp; Crisis Lifeline</strong>, call or text <a href="tel:988">988</a></li>
+        <li>In an emergency, call <a href="tel:911">911</a>.</li>
+      </ul>
+      <p class="small">
+        <strong>Your privacy:</strong> This site has no sign-in. It does not track you.
+        It does not save anything. But your web browser may still remember that you
+        were here. A private window leaves less behind.
+      </p>
+      <p class="small">
+        Steady Start is a student project. It gives general facts, not medical or legal
+        advice. Your own doctor or midwife can help with your own needs.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/guide-content.js"></script>
+  <script src="js/pages-content.js"></script>
+  <script src="js/providers.js"></script>
+  <script src="js/evidence-data.js"></script>
+  <script src="js/texas-map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
